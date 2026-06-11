@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# Countdown Timer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, responsive countdown timer app built with React, Vite, and TypeScript. Track multiple upcoming events with live countdowns, persistent storage, and browser notifications.
 
-Currently, two official plugins are available:
+**Live Demo:** [https://countdown-timer-one-virid.vercel.app/](https://countdown-timer-one-virid.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Add multiple named events with a date and optional time
+- Live countdown display showing days, hours, minutes, and seconds
+- Events persist across sessions via localStorage
+- Browser notification when a countdown reaches zero
+- Expired events auto-remove after 3 seconds
+- Light and dark mode with preference saved across sessions
+- Input validation with clear error messages
+- Responsive layout down to mobile
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React 18](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- TypeScript
+- CSS custom properties for theming (no CSS framework)
+- Native browser APIs only (no date libraries)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+  components/
+    EventForm.tsx         # Controlled form with validation
+    CountdownCard.tsx     # Individual event card with auto-removal
+    CountdownDisplay.tsx  # Segment display (days / hours / mins / secs)
+  hooks/
+    useCountdown.ts       # Core countdown logic with setInterval
+    useTheme.ts           # Dark/light mode toggle with persistence
+  styles/
+    theme.css             # CSS variable tokens for dark and light themes
+    base.css              # Reset, body, app layout
+    header.css            # App header and theme toggle
+    form.css              # Event form, inputs, labels, buttons
+    card.css              # Event cards and remove button
+    countdown.css         # Countdown segments and expired state
+    utilities.css         # Empty state and responsive breakpoints
+  types/
+    index.ts              # Shared TypeScript interfaces
+  utils/
+    notifications.ts      # Browser notification helpers
+    time.ts               # (Reserved for future time utilities)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/your-username/countdown-timer.git
+cd countdown-timer
+npm install
+npm run dev
 ```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+Output goes to the `dist/` folder.
+
+## Deployment
+
+This project is deployed on Vercel. To deploy your own:
+
+```bash
+npm install -g vercel
+vercel --prod
+```
+
+## Notes
+
+- Time calculations use native JavaScript `Date` only, no external libraries
+- Events more than 999 days in the future are rejected to keep the display clean
+- If no time is specified, the event defaults to midnight on the selected date
+- Browser notifications require permission, which is requested on first load
