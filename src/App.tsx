@@ -1,15 +1,7 @@
 import { useState } from 'react'
 import EventForm from './components/EventForm'
-import CountdownDisplay from './components/CountdownDisplay'
-import type { CountdownEvent, TimeRemaining } from './types'
-
-const staticTime: TimeRemaining = {
-  days: 10,
-  hours: 4,
-  minutes: 32,
-  seconds: 17,
-  isExpired: false,
-}
+import CountdownCard from './components/CountdownCard'
+import type { CountdownEvent } from './types'
 
 export default function App() {
   const [events, setEvents] = useState<CountdownEvent[]>([])
@@ -23,11 +15,12 @@ export default function App() {
       <h1>Countdown Timer</h1>
       <EventForm onAdd={handleAdd} />
 
+      {events.length === 0 && (
+        <p className="empty-state">No events yet. Add one above.</p>
+      )}
+
       {events.map(event => (
-        <div key={event.id} className="event-card">
-          <h3>{event.name}</h3>
-          <CountdownDisplay time={staticTime} />
-        </div>
+        <CountdownCard key={event.id} event={event} />
       ))}
     </main>
   )
