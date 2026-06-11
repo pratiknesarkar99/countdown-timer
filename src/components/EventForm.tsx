@@ -59,7 +59,7 @@ export default function EventForm({ onAdd }: Props) {
 
     return (
         <form className="event-form" onSubmit={handleSubmit}>
-            <h2>Add Event</h2>
+            <h2>New Event</h2>
 
             <div className="form-group">
                 <label htmlFor="event-name">Event Name</label>
@@ -72,29 +72,31 @@ export default function EventForm({ onAdd }: Props) {
                 />
             </div>
 
-            <div className="form-group">
-                <label htmlFor="event-date">Date</label>
-                <input
-                    id="event-date"
-                    type="date"
-                    value={date}
-                    onChange={e => setDate(e.target.value)}
-                />
-            </div>
+            <div className="form-row">
+                <div className="form-group">
+                    <label htmlFor="event-date">Date</label>
+                    <input
+                        id="event-date"
+                        type="date"
+                        value={date}
+                        onChange={e => setDate(e.target.value)}
+                    />
+                </div>
 
-            <div className="form-group">
-                <label htmlFor="event-time">Time (optional)</label>
-                <input
-                    id="event-time"
-                    type="time"
-                    value={time}
-                    onChange={e => setTime(e.target.value)}
-                />
+                <div className="form-group">
+                    <label htmlFor="event-time">Time (optional)</label>
+                    <input
+                        id="event-time"
+                        type="time"
+                        value={time}
+                        onChange={e => setTime(e.target.value)}
+                    />
+                </div>
             </div>
 
             {error && <p className="error-message">{error}</p>}
 
-            <button type="submit">Start Countdown</button>
+            <button type="submit" className="submit-btn">Add Countdown</button>
         </form>
     )
 }

@@ -3,6 +3,7 @@ import EventForm from './components/EventForm'
 import CountdownCard from './components/CountdownCard'
 import type { CountdownEvent } from './types'
 import { requestNotificationPermission } from './utils/notifications'
+import { useTheme } from './hooks/useTheme'
 
 const STORAGE_KEY = 'countdown-events'
 
@@ -11,7 +12,6 @@ function loadEvents(): CountdownEvent[] {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (!stored) return []
     const parsed: CountdownEvent[] = JSON.parse(stored)
-    // Filter out events that have already expired
     return parsed.filter(e => new Date(e.targetDate).getTime() > Date.now())
   } catch {
     return []
@@ -24,6 +24,7 @@ function saveEvents(events: CountdownEvent[]) {
 
 export default function App() {
   const [events, setEvents] = useState<CountdownEvent[]>(loadEvents)
+  const { theme, toggle } = useTheme()
 
   useEffect(() => {
     requestNotificationPermission()
@@ -43,16 +44,27 @@ export default function App() {
 
   return (
     <main className="app">
-      <h1>Countdown Timer</h1>
+      <header className="app-header">
+        <div className="app-header-text">
+          <h1>Countdown Timer</h1>
+          <p>Track the moments that matter</p>
+        </div>
+        <button className="theme-toggle" onClick={toggle} aria-label="Toggle theme">
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </header>
+
       <EventForm onAdd={handleAdd} />
 
-      {events.length === 0 && (
-        <p className="empty-state">No events yet. Add one above.</p>
+      {events.length === 0 ? (
+        <p className="empty-state">No events yet. Add one above to get started.</p>
+      ) : (
+        <div className="events-grid">
+          {events.map(event => (
+            <CountdownCard key={event.id} event={event} onRemove={handleRemove} />
+          ))}
+        </div>
       )}
-
-      {events.map(event => (
-        <CountdownCard key={event.id} event={event} onRemove={handleRemove} />
-      ))}
     </main>
   )
 }
