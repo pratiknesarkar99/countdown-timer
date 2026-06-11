@@ -1,0 +1,23 @@
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    padding: 2rem;
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .segment-value {
+        font-size: 1.6rem;
+    }
+
+    .segment {
+        min-width: 56px;
+        padding: 0.6rem 0.5rem;
+    }
+}
