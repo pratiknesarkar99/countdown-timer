@@ -4,6 +4,9 @@ A clean, responsive countdown timer app built with React, Vite, and TypeScript. 
 
 **Live Demo:** [https://countdown-timer-one-virid.vercel.app/](https://countdown-timer-one-virid.vercel.app/)
 
+<img width="1258" height="676" alt="image" src="https://github.com/user-attachments/assets/2e1f173f-975f-4569-83bd-562609519d4e" />
+
+
 ---
 
 ## Features
