@@ -38,6 +38,14 @@ export default function EventForm({ onAdd }: Props) {
             return
         }
 
+        const msUntilEvent = target.getTime() - Date.now()
+        const daysUntilEvent = msUntilEvent / (1000 * 60 * 60 * 24)
+
+        if (daysUntilEvent > 999) {
+            setError('Event is too far in the future. Maximum is 999 days.')
+            return
+        }
+
         onAdd({
             id: crypto.randomUUID(),
             name: name.trim(),

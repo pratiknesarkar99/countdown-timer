@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import type { TimeRemaining } from '../types'
+import { fireNotification } from '../utils/notifications'
 
 function calculateTimeRemaining(targetDate: string): TimeRemaining {
     const now = new Date().getTime()
@@ -18,11 +19,12 @@ function calculateTimeRemaining(targetDate: string): TimeRemaining {
     return { days, hours, minutes, seconds, isExpired: false }
 }
 
-export function useCountdown(targetDate: string): TimeRemaining {
+export function useCountdown(targetDate: string, eventName: string): TimeRemaining {
     const [time, setTime] = useState<TimeRemaining>(() =>
         calculateTimeRemaining(targetDate)
     )
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const hasNotified = useRef(false)
 
     useEffect(() => {
         if (time.isExpired) return
@@ -31,15 +33,19 @@ export function useCountdown(targetDate: string): TimeRemaining {
             const updated = calculateTimeRemaining(targetDate)
             setTime(updated)
 
-            if (updated.isExpired && intervalRef.current) {
-                clearInterval(intervalRef.current)
+            if (updated.isExpired) {
+                if (intervalRef.current) clearInterval(intervalRef.current)
+                if (!hasNotified.current) {
+                    hasNotified.current = true
+                    fireNotification(eventName)
+                }
             }
         }, 1000)
 
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current)
         }
-    }, [targetDate])
+    }, [targetDate, eventName])
 
     return time
 }

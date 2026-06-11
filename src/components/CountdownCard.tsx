@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function CountdownCard({ event }: Props) {
-    const time = useCountdown(event.targetDate)
+    const time = useCountdown(event.targetDate, event.name)
 
     return (
         <div className="event-card">
